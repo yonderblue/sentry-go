@@ -26,7 +26,7 @@ import (
 // is of little use when debugging production errors with Sentry. The Sentry UI
 // is not optimized for long chains either. The top-level error together with a
 // stack trace is often the most useful information.
-const maxErrorDepth = 10
+const maxErrorDepth = 100
 
 // hostname is the host name reported by the kernel. It is precomputed once to
 // avoid syscalls when capturing events.
@@ -432,6 +432,14 @@ func (client *Client) eventFromException(exception error, level Level) *Event {
 		default:
 			err = nil
 		}
+	}
+
+	if len(event.Exception) == maxErrorDepth {
+		const msg = "MAX ERROR DEPTH"
+		event.Exception = append(event.Exception, Exception{
+			Value: msg,
+			Type:  msg,
+		})
 	}
 
 	// Add a trace of the current stack to the most recent error in a chain if
