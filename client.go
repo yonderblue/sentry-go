@@ -451,7 +451,7 @@ func (client *Client) eventFromException(exception error, level Level) *Event {
 	}
 
 	// event.Exception should be sorted such that the most recent error is last.
-	reverse(event.Exception)
+	// reverse(event.Exception)
 
 	return event
 }
