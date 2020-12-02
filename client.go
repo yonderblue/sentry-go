@@ -432,8 +432,11 @@ func (client *Client) eventFromException(exception error, level Level) *Event {
 		event.Exception[0].Stacktrace = NewStacktrace()
 	}
 
+	// NOTE grax - yonderblue - not reversing so we have the lowest part of the
+	// stack trace in the UI issue list.
+	//
 	// event.Exception should be sorted such that the most recent error is last.
-	reverse(event.Exception)
+	// reverse(event.Exception)
 
 	return event
 }
